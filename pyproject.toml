@@ -1,0 +1,85 @@
+[build-system]
+requires = [
+  "hatchling",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "hp1820"
+dynamic = ["version"]
+description = "Home Assistant integration that provides POE management for Hp1820 switch."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = [
+  "python",
+  "home-automation",
+  "home-assistant",
+  "hp1820",
+  "switch"
+]
+authors = [
+  { name = "Andrea Pierangeli", email = "andrea.pierangeli@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+  "async_timeout",
+  "homeassistant",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy",
+  "pre-commit",
+  # Test
+  "pytest",
+  "pytest-asyncio",
+  "pytest-cov",
+  "pytest-mock",
+  "responses",
+  "tox",
+  # Home Assistant fixtures
+  "freezegun",
+  "pytest-asyncio",
+  "pytest-socket",
+  "requests-mock",
+  "syrupy",
+]
+
+lint = [
+  "black",
+  "flake8",
+]
+
+all = [
+  "econnect-metronet[dev]",
+  "econnect-metronet[lint]",
+]
+
+[project.urls]
+Documentation = "https://github.com/andreapier/ha-hp1820"
+Issues = "https://github.com/andreapier/ha-hp1820/issues"
+Source = "https://github.com/andreapier/ha-hp1820"
+
+[tool.hatch.version]
+path = "custom_components/hp1820/manifest.json"
+pattern = '"version":\s"(?P<version>[^"]+)"'
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["custom_components/hp1820"]
+
+[tool.coverage.run]
+omit = [
+  "tests/*",
+]

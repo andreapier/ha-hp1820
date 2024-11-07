@@ -1,0 +1,48 @@
+name: 'Building release package'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Upgrade pip and install required tools
+        run: |
+          pip install --upgrade pip
+          pip install hatch
+
+      - name: Detect build version
+        run: echo "PKG_VERSION=$(hatch version)" >> "$GITHUB_ENV"
+
+      - name: Build test package
+        run: hatch -v build -t sdist
+
+      - name: Log package content
+        run: tar -tvf dist/econnect_metronet-$PKG_VERSION.tar.gz
+
+      - name: Install the package
+        run: pip install dist/econnect_metronet-$PKG_VERSION.tar.gz
+
+      - name: Test if the package is built correctly
+        run: python -c "import custom_components.econnect_metronet"

@@ -1,0 +1,19 @@
+{
+  "domain": "hp1820",
+  "name": "Hp1820",
+  "after_dependencies": [],
+  "codeowners": [
+    "@andreapier"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/andreapier/ha-hp1820",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/andreapier/ha-1820/issues",
+  "loggers": [
+    "custom_components.hp1820"
+  ],
+  "requirements": [],
+  "version": "1.0.0"
+}

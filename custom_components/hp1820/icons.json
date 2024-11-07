@@ -1,0 +1,7 @@
+{
+    "services": {
+        "poe_on": "mdi:power-plug-outline",
+        "poe_off": "mdi:power-plug-off-outline",
+        "update_state": "mdi:update"
+    }
+}

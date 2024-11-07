@@ -1,0 +1,33 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Dispositivo già configurato"
+        },
+        "error": {
+            "cannot_connect": "Connessione fallita",
+            "unknown": "Errore inaspettato: controlla i tuoi log"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "username": "Nome utente",
+                    "password": "Password",
+                    "system_ip": "IP"
+                },
+                "description": "Fornisci le tue credenziali e l'IP utilizzato per accedere alla tua pagina di login via web.",
+                "title": "Configura il tuo switch Hp1820"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Intervallo di scansione in secondi (es. 120 per una scansione ogni 2 minuti)"
+                },
+                "description": "Definisci i parametri dell'integrazione.",
+                "title": "Configura il tuo switch Hp1820"
+            }
+        }
+    }
+}

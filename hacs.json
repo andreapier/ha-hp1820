@@ -1,0 +1,8 @@
+{
+  "name": "hp1820",
+  "content_in_root": false,
+  "render_readme": true,
+  "hide_default_branch": true,
+  "zip_release": true,
+  "filename": "hacs_hp1820.zip"
+}

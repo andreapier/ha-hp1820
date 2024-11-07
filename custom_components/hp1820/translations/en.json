@@ -1,0 +1,33 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "unknown": "Unexpected error: check your logs"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "username": "Username",
+                    "password": "Password",
+                    "system_ip": "IP"
+                },
+                "description": "Provide your credentials and the IP used to access your switch.",
+                "title": "Configure your Hp1820 switch"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Scan interval (e.g. 120 - optional)"
+                },
+                "description": "Define integration parameters.\n\nSet 'Scan Interval' to 120 for one update every 2 minutes",
+                "title": "Configure your Hp1820 switch"
+            }
+        }
+    }
+}

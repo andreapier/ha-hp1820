@@ -1,0 +1,33 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "username": "[%key:common::config_flow::data::username%]",
+                    "password": "[%key:common::config_flow::data::password%]",
+                    "system_ip": "[%key:common::config_flow::data::system_ip%]"
+                },
+                "description": "Provide your credentials and the IP of the switch.",
+                "title": "Configure your Hp1820 switch"
+            }
+        },
+        "error": {
+            "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+            "unknown": "[%key:common::config_flow::error::unknown%]"
+        },
+        "abort": {
+            "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "scan_interval": "Scan interval in seconds (e.g. 120 for one scan every 2 minutes)"
+                },
+                "description": "Define integration parameters.",
+                "title": "Configure your Hp1820 switch"
+            }
+        }
+    }
+}

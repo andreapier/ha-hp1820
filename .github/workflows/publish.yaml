@@ -1,0 +1,31 @@
+name: 'Publish'
+
+on:
+  release:
+    types:
+      - published
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: HACS release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Build release package (HACS)
+        run: |
+          cd ${{ github.workspace }}/custom_components/econnect_metronet
+          zip hacs_econnect_metronet.zip -r ./
+
+      - name: Upload release packages
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          files: |
+            ${{ github.workspace }}/custom_components/econnect_metronet/hacs_econnect_metronet.zip
