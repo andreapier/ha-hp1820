@@ -21,11 +21,11 @@ jobs:
 
       - name: Build release package (HACS)
         run: |
-          cd ${{ github.workspace }}/custom_components/econnect_metronet
-          zip hacs_econnect_metronet.zip -r ./
+          cd ${{ github.workspace }}/custom_components/hp1820
+          zip hacs_hp1820.zip -r ./
 
       - name: Upload release packages
         uses: softprops/action-gh-release@v0.1.15
         with:
           files: |
-            ${{ github.workspace }}/custom_components/econnect_metronet/hacs_econnect_metronet.zip
+            ${{ github.workspace }}/custom_components/hp1820/hacs_hp1820.zip

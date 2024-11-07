@@ -57,8 +57,8 @@ lint = [
 ]
 
 all = [
-  "econnect-metronet[dev]",
-  "econnect-metronet[lint]",
+  "hp1820[dev]",
+  "hp1820[lint]",
 ]
 
 [project.urls]
