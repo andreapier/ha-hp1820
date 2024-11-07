@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  econnect:
+  hp1820:
     runs-on: ubuntu-latest
     env:
       TOX_SKIP_ENV: lint
