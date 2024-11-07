@@ -1,7 +1,7 @@
-from aiohttp.client_exceptions import ClientResponseError
 import logging
 from typing import Dict
 
+from aiohttp.client_exceptions import ClientResponseError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 
@@ -17,7 +17,7 @@ class Hp1820Device:
     """
 
     def __init__(self, config: ConfigEntry, client: Hp1820Client):
-        self._ports : Dict[str, bool] = {}
+        self._ports: Dict[str, bool] = {}
         self._config = config
         self._client = client
 
@@ -76,9 +76,9 @@ class Hp1820Device:
 
         if port not in self._ports:
             raise ValueError(f"get_status | Port {port} not found")
-        
+
         return self._ports[port]
-    
+
     async def set_poe_status(self, port: str, status: bool):
         """
         Set poe status for a specified port.
@@ -97,10 +97,10 @@ class Hp1820Device:
             To turn on a port with ID '1', use:
             >>> device._set_pos_status(1, True)
         """
-        
+
         if port not in self._ports:
             raise ValueError(f"set_poe_status | Port {port} not found")
-        
+
         try:
             await self._login()
             await self._client.set_poe_status(port, status)
@@ -108,7 +108,9 @@ class Hp1820Device:
             _LOGGER.debug(f"_set_poe_status | Succesfully set poe status for port: {port} to {status}")
             return True
         except ClientResponseError as err:
-            _LOGGER.error(f"_set_poe_status | Error while setting poe status for port {port} to {status}: {err.message}")
+            _LOGGER.error(
+                f"_set_poe_status | Error while setting poe status for port {port} to {status}: {err.message}"
+            )
             return False
         finally:
             await self._logout()
@@ -128,8 +130,7 @@ class Hp1820Device:
             raise err
 
     async def _logout(self):
-        """Close the connection with the Hp1820 switch.
-        """
+        """Close the connection with the Hp1820 switch."""
         try:
             await self._client.logout()
             _LOGGER.debug("_logout | Succesfully logged out")

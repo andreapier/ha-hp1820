@@ -1,10 +1,8 @@
-from typing import Union
-
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_USERNAME
 from homeassistant.util import slugify
 
 from .const import CONF_SYSTEM_IP, DOMAIN
+
 
 def generate_entity_id(config: ConfigEntry, name: str) -> str:
     """Generate an entity ID based on system configuration or username.

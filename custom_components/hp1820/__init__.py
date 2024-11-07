@@ -1,7 +1,7 @@
 """Hp1820 integration."""
 
-from functools import partial
 import logging
+from functools import partial
 
 from homeassistant.config_entries import ConfigEntry, ConfigType
 from homeassistant.const import Platform
@@ -24,6 +24,7 @@ from .hp1820_client import Hp1820Client
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = [Platform.SWITCH]
+
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Initialize the Hp1820 integration.
@@ -82,7 +83,7 @@ async def async_setup_entry(hass: HomeAssistant, config: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, config: ConfigEntry):
     """Unload a config entry."""
-    unload_ok =  await hass.config_entries.async_unload_platforms(config, PLATFORMS)
+    unload_ok = await hass.config_entries.async_unload_platforms(config, PLATFORMS)
     if unload_ok:
         # Call the options unsubscriber and remove the configuration
         hass.data[DOMAIN][config.entry_id][KEY_UNSUBSCRIBER]()

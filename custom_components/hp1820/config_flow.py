@@ -1,18 +1,13 @@
-from aiohttp.client_exceptions import ClientResponseError
 import logging
 
+import voluptuous as vol
+from aiohttp.client_exceptions import ClientResponseError
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-import voluptuous as vol
 
-from .const import (
-    CONF_SCAN_INTERVAL,
-    CONF_SYSTEM_IP,
-    DOMAIN,
-    SCAN_INTERVAL_DEFAULT,
-)
+from .const import CONF_SCAN_INTERVAL, CONF_SYSTEM_IP, DOMAIN, SCAN_INTERVAL_DEFAULT
 from .hp1820_client import Hp1820Client
 
 _LOGGER = logging.getLogger(__name__)
@@ -56,7 +51,7 @@ class Hp1820ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignor
                 errors["base"] = "unknown"
             else:
                 return self.async_create_entry(title="Hp1820", data=user_input)
-        
+
         # Populate with latest changes
         user_input = {} if user_input is None else user_input
         return self.async_show_form(
@@ -112,7 +107,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Optional(
                         CONF_SCAN_INTERVAL,
                         description={"suggested_value": suggest_scan_interval},
-                        default = SCAN_INTERVAL_DEFAULT
+                        default=SCAN_INTERVAL_DEFAULT,
                     ): int,
                 }
             ),

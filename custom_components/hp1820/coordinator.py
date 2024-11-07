@@ -1,8 +1,7 @@
-from datetime import timedelta
 import logging
+from datetime import timedelta
 from typing import Any, Dict, Optional
 
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
