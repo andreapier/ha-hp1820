@@ -32,7 +32,7 @@ class Hp1820Client:
         async with await self._httpGet("/htdocs/pages/main/logout.lsp"):
             _LOGGER.debug("logout | logged out")
 
-    async def get_poe_status(self) -> Dict[str, str]:
+    async def get_poe_state(self) -> Dict[str, str]:
         # first_row = [
         #   'Interface', 'Admin Mode', 'Priority', 'Schedule', 'High Power Mode',
         #   'Power Detect Type', 'Power Limit Type', 'Status', 'Fault Status'
@@ -42,7 +42,7 @@ class Hp1820Client:
             rows = self._parse_status(text_response)
             return {x[0]: x[1].lower() == "enabled" for x in rows}  # index 0 is port number, index 1 is enabled status
 
-    async def set_poe_status(self, port: str, status: bool):
+    async def set_poe_state(self, port: str, status: bool):
         config = {
             "admin_mode_sel": "enabled" if status else "disabled",
             "schedule_sel": "none",
@@ -53,9 +53,9 @@ class Hp1820Client:
             "power_limit": "",
             "interface": port,
         }
-        await self._set_poe_status_extended(config)
+        await self._set_poe_state_extended(config)
 
-    async def _set_poe_status_extended(self, config):
+    async def _set_poe_state_extended(self, config):
         payload = {
             "admin_mode_sel[]": config["admin_mode_sel"],  # enabled, disabled
             "schedule_sel[]": config["schedule_sel"],  # none, 1, 2
@@ -70,7 +70,7 @@ class Hp1820Client:
 
         async with await self._httpPost("/htdocs/pages/base/poe_port_cfg_modal.lsp", payload) as response:
             _LOGGER.debug(
-                f"_set_poe_status_extended | Port {config['interface']}={config['admin_mode_sel']}: {response.status}"
+                f"_set_poe_state_extended | Port {config['interface']}={config['admin_mode_sel']}: {response.status}"
             )
 
     async def _httpGet(self, url: str):

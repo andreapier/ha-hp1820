@@ -5,7 +5,7 @@ from aiohttp.client_exceptions import ClientResponseError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 
-from .hp1820_client import Hp1820Client
+from .client import Hp1820Client
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -54,17 +54,17 @@ class Hp1820Device:
         """
         try:
             await self._login()
-            ports = await self._client.get_poe_status()
+            ports = await self._client.get_poe_state()
             _LOGGER.debug(f"update | Succesfully fetched ports status: {ports}")
             self._ports.update(ports)
         except ClientResponseError as err:
-            _LOGGER.error(f"update | Error getting ports status: {err.response.text}")
+            _LOGGER.error(f"update | Error getting ports status: {err.message}")
             raise err
         finally:
             await self._logout()
         return self._ports
 
-    def get_status(self, port: str) -> bool:
+    def get_port_state(self, port: str) -> bool:
         """Get the status of a port specified by id.
 
         Parameters:
@@ -75,11 +75,11 @@ class Hp1820Device:
         """
 
         if port not in self._ports:
-            raise ValueError(f"get_status | Port {port} not found")
+            raise ValueError(f"get_port_state | Port {port} not found")
 
         return self._ports[port]
 
-    async def set_poe_status(self, port: str, status: bool):
+    async def set_port_state(self, port: str, state: bool) -> bool:
         """
         Set poe status for a specified port.
 
@@ -99,18 +99,16 @@ class Hp1820Device:
         """
 
         if port not in self._ports:
-            raise ValueError(f"set_poe_status | Port {port} not found")
+            raise ValueError(f"set_port_state | Port {port} not found")
 
         try:
             await self._login()
-            await self._client.set_poe_status(port, status)
-            self._ports[port] = status
-            _LOGGER.debug(f"_set_poe_status | Succesfully set poe status for port: {port} to {status}")
+            await self._client.set_poe_state(port, state)
+            self._ports[port] = state
+            _LOGGER.debug(f"set_port_state | Succesfully set poe status for port: {port} to {state}")
             return True
-        except ClientResponseError as err:
-            _LOGGER.error(
-                f"_set_poe_status | Error while setting poe status for port {port} to {status}: {err.message}"
-            )
+        except Exception as err:
+            _LOGGER.error(f"set_port_state | Error while setting poe status for port {port} to {state}: {err}")
             return False
         finally:
             await self._logout()

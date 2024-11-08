@@ -9,6 +9,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from . import services
+from .client import Hp1820Client
 from .const import (
     CONF_SCAN_INTERVAL,
     CONF_SYSTEM_IP,
@@ -20,7 +21,6 @@ from .const import (
 )
 from .coordinator import Hp1820Coordinator
 from .devices import Hp1820Device
-from .hp1820_client import Hp1820Client
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = [Platform.SWITCH]

@@ -1,5 +1,3 @@
-import logging
-
 from homeassistant.components import persistent_notification
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
@@ -21,8 +19,6 @@ from .const import (
 from .devices import Hp1820Device
 from .helpers import generate_entity_id
 
-_LOGGER = logging.getLogger(__name__)
-
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -36,7 +32,7 @@ async def async_setup_entry(
     # Iterate through the ports of the device and create PortPoeSwitch objects
     for port_id, _ in device.ports:
         unique_id = f"{entry.entry_id}_{DOMAIN}_{port_id}"
-        ports.append(PoePortSwitch(unique_id, port_id, entry, port_id.zfill(2), coordinator, device))
+        ports.append(PoePortSwitch(hass, unique_id, port_id, entry, port_id.zfill(2), coordinator, device))
 
     async_add_entities(ports)
 
@@ -48,6 +44,7 @@ class PoePortSwitch(CoordinatorEntity, SwitchEntity):
 
     def __init__(
         self,
+        hass: HomeAssistant,
         unique_id: str,
         port_id: str,
         config: ConfigEntry,
@@ -62,6 +59,7 @@ class PoePortSwitch(CoordinatorEntity, SwitchEntity):
         self._device = device
         self._unique_id = unique_id
         self._port_id = port_id
+        self.hass = hass
 
     @property
     def unique_id(self) -> str:
@@ -81,11 +79,11 @@ class PoePortSwitch(CoordinatorEntity, SwitchEntity):
     @property
     def is_on(self) -> bool:
         """Return the switch status (on/off)."""
-        return self._device.get_status(self._port_id)
+        return self._device.get_port_state(self._port_id)
 
     async def async_turn_off(self):
         """Turn the entity off."""
-        result = await self._device.set_poe_status(self._port_id, False)
+        result = await self._device.set_port_state(self._port_id, False)
         if not result:
             persistent_notification.async_create(
                 self.hass, NOTIFICATION_MESSAGE, NOTIFICATION_TITLE, NOTIFICATION_IDENTIFIER
@@ -95,7 +93,7 @@ class PoePortSwitch(CoordinatorEntity, SwitchEntity):
 
     async def async_turn_on(self):
         """Turn the entity off."""
-        result = await self._device.set_poe_status(self._port_id, True)
+        result = await self._device.set_port_state(self._port_id, True)
         if not result:
             persistent_notification.async_create(
                 self.hass, NOTIFICATION_MESSAGE, NOTIFICATION_TITLE, NOTIFICATION_IDENTIFIER

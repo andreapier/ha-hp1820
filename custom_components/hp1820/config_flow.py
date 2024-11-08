@@ -7,8 +7,8 @@ from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
+from .client import Hp1820Client
 from .const import CONF_SCAN_INTERVAL, CONF_SYSTEM_IP, DOMAIN, SCAN_INTERVAL_DEFAULT
-from .hp1820_client import Hp1820Client
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -39,7 +39,9 @@ class Hp1820ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignor
                 await client.login(username, password)
                 await client.logout()
             except ClientResponseError as err:
-                if 400 <= err.status <= 499:
+                if err.status == 401:
+                    errors["base"] = "invalid_auth"
+                elif 402 <= err.status <= 499:
                     errors["base"] = "client_error"
                 elif 500 <= err.status <= 599:
                     errors["base"] = "server_error"
@@ -80,10 +82,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
     """Reconfigure integration options.
 
     Available options are:
-        * Areas armed in Arm Away state. If not set all sectors are armed.
-        * Areas armed in Arm Home state
-        * Areas armed in Arm Night state
-        * Areas armed in Arm Vacation state
+        * Scan interval: sets the polling time
     """
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:

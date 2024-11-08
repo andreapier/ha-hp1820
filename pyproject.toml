@@ -37,11 +37,11 @@ dev = [
   "mypy",
   "pre-commit",
   # Test
+  "aioresponses",
   "pytest",
   "pytest-asyncio",
   "pytest-cov",
   "pytest-mock",
-  "responses",
   "tox",
   # Home Assistant fixtures
   "freezegun",

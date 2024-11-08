@@ -4,7 +4,7 @@
             "already_configured": "Dispositivo già configurato"
         },
         "error": {
-            "cannot_connect": "Connessione fallita",
+            "invalid_auth": "Autenticazione non valida",
             "unknown": "Errore inaspettato: controlla i tuoi log"
         },
         "step": {
